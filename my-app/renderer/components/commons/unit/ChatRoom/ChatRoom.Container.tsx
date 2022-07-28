@@ -39,7 +39,6 @@ export default function ChatRoomPage(props){
       })
 },[onSnapshot])  
 
-console.log(resultMsg)
     return(
         <div>
         <ChatRoom>

@@ -4,19 +4,18 @@ import Head from 'next/head';
 import { getApps, initializeApp } from 'firebase/app';
 import { getFirestore } from 'firebase/firestore';
 import { getAuth } from "firebase/auth";
+import dotenv from 'dotenv'
+dotenv.config()
 
 const firebaseConfig = {
-  apiKey: "AIzaSyAiAZ9xpQkNGC4NboaoOYuO2SHVTJ4hUFk",
-  authDomain: "chattest-18b5b.firebaseapp.com",
-  projectId: "chattest-18b5b",
-  storageBucket: "chattest-18b5b.appspot.com",
-  messagingSenderId: "164411616933",
-  appId: "1:164411616933:web:b55e79a47a8b104ba7e74c",
-  measurementId: "G-17E03HTRLR"
+  apiKey: process.env.REACT_APP_FIREBASE_API_KEY,
+  authDomain: process.env.REACT_APP_FIREBASE_AUTH_DOMAIN,
+  projectId: process.env.REACT_APP_FIREBASE_PROJECT_ID,
+  storageBucket: process.env.REACT_APP_FIREBASE_STORAGE_BUCKET,
+  messagingSenderId: process.env.REACT_APP_FIREBASE_MESSAGING_SENDER_ID,
+  appId: process.env.REACT_APP_FIREBASE_APP_ID,
+  measurementId: process.env.REACT_APP_FIREBASE_MEASUREMENTID
 };
-if (!getApps().length) {
-  initializeApp(firebaseConfig);
-}
 export const firebaseApp = initializeApp(firebaseConfig);
 export const db = getFirestore(firebaseApp);
 export const firebaseAuth = getAuth(firebaseApp);
