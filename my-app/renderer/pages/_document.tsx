@@ -1,6 +1,6 @@
-import React from 'react';
-import Document, { Html, Head, Main, NextScript } from 'next/document';
-import { css, Global } from '@emotion/react';
+import React from "react";
+import Document, { Html, Head, Main, NextScript } from "next/document";
+import { css, Global } from "@emotion/react";
 
 class MyDocument extends Document {
   render() {
@@ -11,15 +11,19 @@ class MyDocument extends Document {
         </Head>
         <Global
           styles={css`
-            html, body {
+            html,
+            body {
               margin: 0;
               padding: 0;
               min-height: 100%;
+              display: flex;
+              justify-content: center;
             }
 
             body {
+              align-items: center;
               padding: 2rem 4rem;
-              background: papayawhip;
+              background: white;
               font-family: Helvetica, Arial, sans-serif;
               font-size: 24px;
             }

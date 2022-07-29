@@ -1,13 +1,21 @@
-import styled from '@emotion/styled'
+import styled from "@emotion/styled";
 
-
-
+interface IPropsPasswordValid {
+  passwordValid: boolean;
+}
+interface IPropsEmailValid {
+  emailValid: boolean;
+}
+interface IPropsValid {
+  emailValid: boolean;
+  passwordValid: boolean;
+}
 export const LoginWrapper = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
+  width: 40%;
   padding: 2%;
-  width: 35%;
   background-color: #eeeeee;
 `;
 export const Form = styled.form`
@@ -15,7 +23,6 @@ export const Form = styled.form`
   width: 100%;
   flex-direction: column;
   align-items: center;
-  width: 100%;
   background-color: white;
   margin-bottom: 15px;
 `;
@@ -28,10 +35,10 @@ export const InputWrapper = styled.div`
   gap: 10px;
   padding: 5%;
 `;
-export const Input = styled.input`
+export const Input = styled.input<IPropsEmailValid>`
   border-radius: 5px;
   border: ${(props) =>
-    props.emailValid ? '1px solid #eeeeee' : '1px solid #f77167'};
+    props.emailValid ? "1px solid #eeeeee" : "1px solid #f77167"};
   width: 80%;
   height: 50px;
   padding-left: 5px;
@@ -39,10 +46,10 @@ export const Input = styled.input`
   font-size: 15px;
 `;
 
-export const PasswordInput = styled.input`
+export const PasswordInput = styled.input<IPropsPasswordValid>`
   border-radius: 5px;
   border: ${(props) =>
-    props.passwordValid ? '1px solid #eeeeee' : '1px solid #f77167'};
+    props.passwordValid ? "1px solid #eeeeee" : "1px solid #f77167"};
   width: 80%;
   height: 50px;
   padding-left: 5px;
@@ -50,11 +57,11 @@ export const PasswordInput = styled.input`
   font-size: 15px;
 `;
 
-export const Button = styled.button`
+export const Button = styled.button<IPropsValid>`
   width: 80%;
   height: 40px;
   background-color: ${(props) =>
-    props.passwordValid && props.emailValid ? '#2c88dd' : '#9fc5e8'};
+    props.passwordValid && props.emailValid ? "#2c88dd" : "#9fc5e8"};
   border-radius: 5px;
   font-size: 17px;
   color: white;
@@ -88,7 +95,7 @@ export const SignUpFont = styled.div`
   margin-right: 10px;
 `;
 
-export const SignUpButton = styled.div`
+export const SignUpButton = styled.button`
   font-size: 17px;
   font-weight: bold;
   color: #3d85c6;
@@ -98,5 +105,3 @@ export const SignUpButton = styled.div`
     color: #3d85c6;
   }
 `;
-
-

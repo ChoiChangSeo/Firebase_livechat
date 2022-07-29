@@ -1,7 +1,18 @@
-import React from 'react';
-import * as S from './LoginStyles';
+import React, { ChangeEvent, FormEvent, LegacyRef, MouseEvent } from "react";
+import * as S from "./LoginStyles";
 
-export default function LoginUI(props) {
+interface IPropsLoginUI {
+  onChangeEmail: (e: ChangeEvent<HTMLInputElement>) => void;
+  onChangePassword: (e: ChangeEvent<HTMLInputElement>) => void;
+  SignUpButton: (e: MouseEvent<HTMLButtonElement>) => void;
+  LoginButton: (e: FormEvent<HTMLFormElement>) => void;
+  emailRef: LegacyRef<HTMLInputElement>;
+  passwordRef: LegacyRef<HTMLInputElement>;
+  passwordValid: boolean;
+  emailValid: boolean;
+}
+
+export default function LoginUI(props: IPropsLoginUI) {
   return (
     <S.LoginWrapper>
       <S.Form onSubmit={props.LoginButton}>
@@ -10,21 +21,21 @@ export default function LoginUI(props) {
             emailValid={props.emailValid}
             onChange={props.onChangeEmail}
             ref={props.emailRef}
-            placeholder="전화번호, 사용자 이름 또는 이메일"
-          ></S.Input>
+            placeholder="이메일을 입력해주세요"
+          />
           <S.PasswordInput
             passwordValid={props.passwordValid}
             onChange={props.onChangePassword}
             ref={props.passwordRef}
             type="password"
-            placeholder="비밀번호"
-          ></S.PasswordInput>
+            placeholder="비밀번호는 8~16자리 영문,숫자,특수문자 포함입니다."
+          />
           <S.Button
-          passwordValid={props.passwordValid}
-          emailValid={props.emailValid}
-        >
-          로그인
-        </S.Button>
+            passwordValid={props.passwordValid}
+            emailValid={props.emailValid}
+          >
+            로그인
+          </S.Button>
         </S.InputWrapper>
         <S.Division>
           <S.Mark></S.Mark>

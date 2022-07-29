@@ -1,7 +1,6 @@
-import React from 'react';
-import Head from 'next/head';
-import LoginPage from '../components/Login/LoginContainer';
-
+import React from "react";
+import Head from "next/head";
+import LoginPage from "../components/Login/LoginContainer";
 
 function Next() {
   return (
@@ -9,9 +8,9 @@ function Next() {
       <Head>
         <title>Next - Nextron (with-typescript-emotion)</title>
       </Head>
-    <LoginPage/>
+      <LoginPage />
     </React.Fragment>
   );
-};
+}
 
 export default Next;

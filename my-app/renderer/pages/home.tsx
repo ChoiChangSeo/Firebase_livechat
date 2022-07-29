@@ -1,14 +1,12 @@
-import React from 'react';
-import Head from 'next/head';
-import Link from 'next/link';
-import { useRouter } from 'next/router';
-
+import React from "react";
+import Head from "next/head";
+import { useRouter } from "next/router";
 
 function Home() {
-  const router = useRouter()
+  const router = useRouter();
   const moveToLogin = () => {
-    router.push('/login')
-  }
+    router.push("/login");
+  };
   return (
     <React.Fragment>
       <Head>
@@ -18,6 +16,6 @@ function Home() {
       <button onClick={moveToLogin}>로그인하기</button>
     </React.Fragment>
   );
-};
+}
 
 export default Home;
