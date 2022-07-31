@@ -6,6 +6,8 @@ import { getFirestore } from "firebase/firestore";
 import { getAuth } from "firebase/auth";
 import dotenv from "dotenv";
 import styled from "@emotion/styled";
+import { HashRouter } from "react-router-dom";
+
 dotenv.config();
 
 const firebaseConfig = {
@@ -31,9 +33,6 @@ const Wrapper = styled.div`
 function MyApp({ Component, pageProps }: AppProps) {
   return (
     <React.Fragment>
-      <Head>
-        <meta name="viewport" content="width=device-width, initial-scale=1" />
-      </Head>
       <Wrapper>
         <Component {...pageProps} />
       </Wrapper>

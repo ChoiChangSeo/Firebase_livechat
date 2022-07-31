@@ -1,5 +1,5 @@
 import MainPage from "../../components/Main/MainContainer";
 
-export default function SignUp() {
+export default function Main() {
   return <MainPage />;
 }

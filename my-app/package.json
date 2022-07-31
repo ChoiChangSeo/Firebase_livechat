@@ -11,10 +11,14 @@
     "postinstall": "electron-builder install-app-deps"
   },
   "dependencies": {
+    "@types/history": "^5.0.0",
+    "@types/react-router": "^5.1.18",
     "dotenv": "^16.0.1",
     "electron-serve": "^1.1.0",
     "electron-store": "^8.0.1",
     "firebase": "^9.9.1",
+    "react-router": "^6.3.0",
+    "react-router-dom": "^6.3.0",
     "uuid": "^8.3.2"
   },
   "devDependencies": {

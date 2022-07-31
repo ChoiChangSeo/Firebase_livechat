@@ -6,10 +6,8 @@ export const ChatRoom = styled.form`
   display: flex;
   flex-direction: column;
   border-left: 1px solid #0085cb;
+  border-right: 1px solid #0085cb;
   border-radius: 20px;
-  /* position: fixed;
-  z-index: 10;
-  background-color: rgba(0, 0, 0, 0.6); */
 `;
 export const TalkHeader = styled.div`
   display: flex;
@@ -50,7 +48,7 @@ export const TalkWrite = styled.input`
   height: 30px;
   font-size: 13px;
   border-radius: 0px 0px 20px 20px;
-  border: 2.2px solid #0085cb;
+  border: 1px solid #0085cb;
   border-top: 2.2px solid #0085cb;
   padding: 10px;
   ::placeholder {

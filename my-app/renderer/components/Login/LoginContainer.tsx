@@ -3,7 +3,11 @@ import LoginUI from "./LoginPresenter";
 import React from "react";
 import { checkEmail, checkPassword } from "../commons/utils/loginValidation";
 import { useRouter } from "next/router";
-import { signInWithEmailAndPassword } from "firebase/auth";
+import {
+  browserLocalPersistence,
+  browserSessionPersistence,
+  signInWithEmailAndPassword,
+} from "firebase/auth";
 import { firebaseAuth } from "../../pages/_app";
 
 export default function LoginPage() {
@@ -35,6 +39,7 @@ export default function LoginPage() {
           emailRef.current?.value,
           passwordRef.current?.value
         );
+        localStorage.setItem("user", firebaseAuth.currentUser?.displayName);
         router.push("/main");
       } catch (error) {
         if (error instanceof Error) alert(error.message);

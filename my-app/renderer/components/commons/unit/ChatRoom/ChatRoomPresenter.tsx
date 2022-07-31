@@ -34,7 +34,7 @@ export default function ChatRoomUI(props: IPropsChatRoomUI) {
       <S.MessageWrapper>
         {props.resultMsg.map((el: IPropsData) => (
           <div key={uuidv4()}>
-            {el.nickName === firebaseAuth.currentUser?.displayName ? (
+            {el.nickName === localStorage.getItem("user") ? (
               <S.Right>
                 <S.Text ref={props.messagesEndRef}>
                   {el.nickName} : {el.message}

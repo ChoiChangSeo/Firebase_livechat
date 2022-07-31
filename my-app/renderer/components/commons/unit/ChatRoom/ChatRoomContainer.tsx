@@ -41,21 +41,45 @@ export default function ChatRoomPage(props: IPropsChatRoomPage) {
 
   const sendMsg = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    await addDoc(collection(db, props.chatRoomId), {
-      nickName: firebaseAuth.currentUser?.displayName,
-      message: msg,
-      timestamp: new Date(),
-    });
-    setMsg("");
-    messagesEndRef.current?.scrollIntoView({
-      behavior: "smooth",
-      block: "nearest",
-    });
+    if (props.oneRoomId) {
+      await addDoc(
+        collection(
+          db,
+          `${props.oneRoomId}/${localStorage.getItem("user")}/chat`
+        ),
+        {
+          nickName: localStorage.getItem("user"),
+          message: msg,
+          timestamp: new Date(),
+        }
+      );
+      setMsg("");
+      messagesEndRef.current?.scrollIntoView({
+        behavior: "smooth",
+        block: "nearest",
+      });
+    } else {
+      await addDoc(collection(db, props.chatRoomId), {
+        nickName: localStorage.getItem("user"),
+        message: msg,
+        timestamp: new Date(),
+      });
+      setMsg("");
+      messagesEndRef.current?.scrollIntoView({
+        behavior: "smooth",
+        block: "nearest",
+      });
+    }
   };
 
   useEffect(() => {
+    // const oneRoom = `${localStorage.getItem("user")}to${props.oneRoomId}`;
     const q: Query<DocumentData> = query(
-      collection(db, props.chatRoomId),
+      collection(
+        db,
+        props.chatRoomId ||
+          `${props.oneRoomId}/${localStorage.getItem("user")}/chat`
+      ),
       orderBy("timestamp", "desc")
     );
     onSnapshot(q, (querySnapshot) => {
@@ -64,12 +88,18 @@ export default function ChatRoomPage(props: IPropsChatRoomPage) {
         ...doc.data(),
       }));
       setResultMsg(result.reverse());
+      messagesEndRef.current?.scrollIntoView({
+        behavior: "smooth",
+        block: "nearest",
+      });
     });
   }, [onSnapshot]);
 
   const closeChatRoom = (e: MouseEvent<HTMLDivElement>) => {
     if (e.target == e.currentTarget) {
       props.setMakeRoom(false);
+      props.setOneRoomId("");
+      props.setChatRoomId("");
     }
   };
   return (

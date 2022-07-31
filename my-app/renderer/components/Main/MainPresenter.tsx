@@ -1,6 +1,7 @@
 import styled from "@emotion/styled";
 import { Dispatch, MouseEvent, SetStateAction } from "react";
 import ChatRoomPage from "../commons/unit/ChatRoom/ChatRoomContainer";
+import { v4 as uuidv4 } from "uuid";
 
 const Wrapper = styled.div`
   display: flex;
@@ -56,10 +57,13 @@ export default function MainUI(props: IPropsMainUI) {
       <UserListWrapper>
         {props.userList.map((el: IPropsEl) => (
           <>
-            <UserList key={el.id}>
+            <UserList key={uuidv4()}>
               <UserName>{el.nickName}</UserName>
               <Button id={el.id} onClick={props.openChatRoom}>
-                채팅참여
+                그룹채팅참여
+              </Button>
+              <Button id={el.nickName} onClick={props.openOneRoom}>
+                1:1채팅
               </Button>
             </UserList>
             <Mark></Mark>
@@ -68,6 +72,9 @@ export default function MainUI(props: IPropsMainUI) {
       </UserListWrapper>
       {props.makeRoom && (
         <ChatRoomPage
+          setOneRoomId={props.setOneRoomId}
+          setChatRoomId={props.setChatRoomId}
+          oneRoomId={props.oneRoomId}
           setMakeRoom={props.setMakeRoom}
           chatRoomId={props.chatRoomId}
         />

@@ -1,5 +1,5 @@
 import LoginPage from "../../components/Login/LoginContainer";
 
-export default function SignUp() {
+export default function Login() {
   return <LoginPage />;
 }
