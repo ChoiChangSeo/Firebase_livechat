@@ -1,17 +1,15 @@
 import { db } from "../../pages/_app";
 import {
   collection,
-  collectionGroup,
   DocumentData,
-  getDoc,
   getDocs,
   onSnapshot,
   query,
   Query,
-  where,
 } from "firebase/firestore";
 import MainUI from "./MainPresenter";
 import { MouseEvent, useEffect, useState } from "react";
+import { resolve } from "path/posix";
 
 interface IPropsData {
   id?: string;
@@ -22,21 +20,11 @@ interface IPropsData {
 export default function MainPage() {
   const [userList, setUserList] = useState<IPropsData[]>([]);
   const [makeRoom, setMakeRoom] = useState<boolean>(false);
-  const [chatRoomId, setChatRoomId] = useState("");
-  const [oneRoomId, setOneRoomId] = useState("");
-  const [fromChatRoom, setFromChatRoom] = useState([]);
-  const [makeGroupRoom, setMakeGroupRoom] = useState(false);
-  const [groupMember, setGroupMember] = useState([]);
-  const [data, setData] = useState([]);
-  const [userName, setUserName] = useState("");
-  const fetchUserList = async () => {
-    const list = await getDocs(collection(db, "Users"));
-    const data = list.docs.map((doc) => ({
-      ...doc.data(),
-      id: doc.id,
-    }));
-    setUserList(data);
-  };
+  const [oneRoomId, setOneRoomId] = useState<string>("");
+  const [fromChatRoom, setFromChatRoom] = useState<{}>([]);
+  const [makeGroupRoom, setMakeGroupRoom] = useState<boolean>(false);
+  const [groupMember, setGroupMember] = useState<string[]>([]);
+  const [userName, setUserName] = useState<string>("");
 
   const openOneRoom = async (e: MouseEvent<HTMLButtonElement>) => {
     const id = (e.target as Element).id;
@@ -54,7 +42,7 @@ export default function MainPage() {
     setMakeGroupRoom((prev) => !prev);
   };
 
-  const onChagneGroupMember = (checked: boolean, id: string) => {
+  const onChangeGroupMember = (checked: boolean, id: string) => {
     if (checked) {
       setGroupMember([...groupMember, id]);
     } else {
@@ -69,34 +57,40 @@ export default function MainPage() {
   };
 
   useEffect(() => {
-    fetchUserList();
+    const list: Query<DocumentData> = query(collection(db, "Users"));
+    onSnapshot(list, (querySnapshot) => {
+      const result = querySnapshot.docs.map((doc) => ({
+        id: doc.id,
+        ...doc.data(),
+      }));
+      setUserList(result);
+    });
     const q: Query<DocumentData> = query(
-      collection(db, localStorage.getItem("user"))
+      collection(db, String(localStorage.getItem("user")))
     );
     onSnapshot(q, (querySnapshot) => {
       const result = querySnapshot.docs.map((doc) => ({
         id: doc.id,
         ...doc.data(),
       }));
-      setFromChatRoom(result);
       console.log(result);
+      setFromChatRoom(result);
     });
-    setUserName(localStorage.getItem("user"));
+    setUserName(String(localStorage.getItem("user")));
   }, []);
   return (
     <MainUI
       makeGroupRoom={makeGroupRoom}
       makeGroupChatRoom={makeGroupChatRoom}
-      onChagneGroupMember={onChagneGroupMember}
+      setGroupMember={setGroupMember}
+      onChangeGroupMember={onChangeGroupMember}
       inviteGroupMember={inviteGroupMember}
       userList={userList}
       openOneRoom={openOneRoom}
       setMakeRoom={setMakeRoom}
       oneRoomId={oneRoomId}
       makeRoom={makeRoom}
-      chatRoomId={chatRoomId}
       setOneRoomId={setOneRoomId}
-      setChatRoomId={setChatRoomId}
       fromChatRoom={fromChatRoom}
       groupMember={groupMember}
       userName={userName}

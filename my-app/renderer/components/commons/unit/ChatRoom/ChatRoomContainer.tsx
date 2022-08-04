@@ -23,8 +23,11 @@ import { db, firebaseAuth } from "../../../../pages/_app";
 import ChatRoomUI from "./ChatRoomPresenter";
 
 interface IPropsChatRoomPage {
-  chatRoomId?: string;
+  setGroupMember: Dispatch<SetStateAction<string[]>>;
+  setOneRoomId: Dispatch<SetStateAction<string>>;
   setMakeRoom: Dispatch<SetStateAction<boolean>>;
+  oneRoomId: string;
+  groupMember: string[];
 }
 interface IPropsData {
   id?: string;
@@ -79,9 +82,7 @@ export default function ChatRoomPage(props: IPropsChatRoomPage) {
         }
       );
     } else if (props.groupMember) {
-      console.log(props.groupMember);
       props.groupMember.map(async (el) => {
-        console.log(el);
         const result = await addDoc(
           collection(db, `${el}/${String(props.groupMember)}/chat`),
           {
@@ -90,7 +91,6 @@ export default function ChatRoomPage(props: IPropsChatRoomPage) {
             timestamp: new Date(),
           }
         );
-        console.log(result);
       });
 
       props.groupMember.map(async (el) => {
@@ -98,12 +98,13 @@ export default function ChatRoomPage(props: IPropsChatRoomPage) {
           from: `${String(props.groupMember)}`,
         });
       });
-      setMsg("");
-      messagesEndRef.current?.scrollIntoView({
-        behavior: "smooth",
-        block: "nearest",
-      });
+      props.setGroupMember([]);
     }
+    setMsg("");
+    messagesEndRef.current?.scrollIntoView({
+      behavior: "smooth",
+      block: "nearest",
+    });
   };
   useEffect(() => {
     if (props.oneRoomId) {
@@ -151,7 +152,6 @@ export default function ChatRoomPage(props: IPropsChatRoomPage) {
     if (e.target == e.currentTarget) {
       props.setMakeRoom(false);
       props.setOneRoomId("");
-      props.setChatRoomId("");
     }
   };
   return (

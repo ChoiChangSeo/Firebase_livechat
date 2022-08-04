@@ -3,11 +3,7 @@ import LoginUI from "./SignUpPresenter";
 import React from "react";
 import { checkEmail, checkPassword } from "../commons/utils/loginValidation";
 import { useRouter } from "next/router";
-import {
-  createUserWithEmailAndPassword,
-  OAuthProvider,
-  updateProfile,
-} from "firebase/auth";
+import { createUserWithEmailAndPassword, updateProfile } from "firebase/auth";
 import { db, firebaseAuth } from "../../pages/_app";
 import { doc, setDoc } from "firebase/firestore";
 
