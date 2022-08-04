@@ -18,6 +18,7 @@ const UserListWrapper = styled.div`
   width: 40%;
   border: 1px solid #0085cb;
   border-radius: 5%;
+  padding: 1%;
 `;
 const UserName = styled.div`
   font-size: 20px;
@@ -54,11 +55,36 @@ interface IPropsEl {
 export default function MainUI(props: IPropsMainUI) {
   return (
     <Wrapper>
+      <Button onClick={props.makeGroupChatRoom}>그룹채팅만들기</Button>
+      {props.makeGroupRoom && (
+        <Button onClick={props.inviteGroupMember}>초대하기</Button>
+      )}
       <UserListWrapper>
+        유저리스트
         {props.userList.map((el: IPropsEl) => (
           <>
             <UserList key={uuidv4()}>
-              <UserName>{el.nickName}</UserName>
+              {props.makeGroupRoom ? (
+                <>
+                  {props.userName !== el.nickName && (
+                    <input
+                      type="checkbox"
+                      onChange={(e) => {
+                        props.onChagneGroupMember(
+                          e.currentTarget.checked,
+                          el.nickName
+                        );
+                      }}
+                      checked={
+                        props.groupMember.includes(el.nickName) ? true : false
+                      }
+                    />
+                  )}
+                  <UserName>{el.nickName}</UserName>
+                </>
+              ) : (
+                <UserName>{el.nickName}</UserName>
+              )}
               <Button id={el.id} onClick={props.openChatRoom}>
                 그룹채팅참여
               </Button>
@@ -70,6 +96,16 @@ export default function MainUI(props: IPropsMainUI) {
           </>
         ))}
       </UserListWrapper>
+      <UserListWrapper>
+        {props.userName}님 채팅방 목록
+        {props.fromChatRoom.map((el) => (
+          <div key={uuidv4()}>
+            <Button id={el.from} onClick={props.openOneRoom}>
+              {el.from}님과 채팅방
+            </Button>
+          </div>
+        ))}
+      </UserListWrapper>
       {props.makeRoom && (
         <ChatRoomPage
           setOneRoomId={props.setOneRoomId}
@@ -77,6 +113,7 @@ export default function MainUI(props: IPropsMainUI) {
           oneRoomId={props.oneRoomId}
           setMakeRoom={props.setMakeRoom}
           chatRoomId={props.chatRoomId}
+          groupMember={props.groupMember}
         />
       )}
     </Wrapper>

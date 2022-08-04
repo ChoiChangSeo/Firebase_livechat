@@ -1,14 +1,17 @@
-import { db, firebaseAuth } from "../../pages/_app";
+import { db } from "../../pages/_app";
 import {
   collection,
+  collectionGroup,
   DocumentData,
+  getDoc,
   getDocs,
+  onSnapshot,
   query,
   Query,
+  where,
 } from "firebase/firestore";
 import MainUI from "./MainPresenter";
 import { MouseEvent, useEffect, useState } from "react";
-import { browserLocalPersistence } from "firebase/auth";
 
 interface IPropsData {
   id?: string;
@@ -21,6 +24,11 @@ export default function MainPage() {
   const [makeRoom, setMakeRoom] = useState<boolean>(false);
   const [chatRoomId, setChatRoomId] = useState("");
   const [oneRoomId, setOneRoomId] = useState("");
+  const [fromChatRoom, setFromChatRoom] = useState([]);
+  const [makeGroupRoom, setMakeGroupRoom] = useState(false);
+  const [groupMember, setGroupMember] = useState([]);
+  const [data, setData] = useState([]);
+  const [userName, setUserName] = useState("");
   const fetchUserList = async () => {
     const list = await getDocs(collection(db, "Users"));
     const data = list.docs.map((doc) => ({
@@ -29,35 +37,59 @@ export default function MainPage() {
     }));
     setUserList(data);
   };
-  const openChatRoom = async (e: MouseEvent<HTMLButtonElement>) => {
-    setChatRoomId((e.target as Element).id);
-    setMakeRoom(true);
-  };
 
   const openOneRoom = async (e: MouseEvent<HTMLButtonElement>) => {
-    setOneRoomId((e.target as Element).id);
+    const id = (e.target as Element).id;
+
+    if (id.includes(",")) {
+      const result = id.split(",");
+      setGroupMember(result);
+    } else {
+      setOneRoomId((e.target as Element).id);
+    }
     setMakeRoom(true);
   };
 
-  const result = async () => {
-    console.log(localStorage.getItem("user"));
-    const q: Query<DocumentData> = query(
-      collection(db, `${localStorage.getItem("user")}`)
-    );
-    const querySnapshot = await getDocs(q);
-    querySnapshot.forEach((doc) => {
-      console.log(doc.id, " => ", doc.data());
-    });
+  const makeGroupChatRoom = () => {
+    setMakeGroupRoom((prev) => !prev);
+  };
+
+  const onChagneGroupMember = (checked: boolean, id: string) => {
+    if (checked) {
+      setGroupMember([...groupMember, id]);
+    } else {
+      setGroupMember(groupMember.filter((el) => el !== id));
+    }
+  };
+
+  const inviteGroupMember = () => {
+    setMakeRoom(true);
+    setMakeGroupRoom(false);
+    setGroupMember([...groupMember, userName]);
   };
 
   useEffect(() => {
     fetchUserList();
-    result();
+    const q: Query<DocumentData> = query(
+      collection(db, localStorage.getItem("user"))
+    );
+    onSnapshot(q, (querySnapshot) => {
+      const result = querySnapshot.docs.map((doc) => ({
+        id: doc.id,
+        ...doc.data(),
+      }));
+      setFromChatRoom(result);
+      console.log(result);
+    });
+    setUserName(localStorage.getItem("user"));
   }, []);
   return (
     <MainUI
+      makeGroupRoom={makeGroupRoom}
+      makeGroupChatRoom={makeGroupChatRoom}
+      onChagneGroupMember={onChagneGroupMember}
+      inviteGroupMember={inviteGroupMember}
       userList={userList}
-      openChatRoom={openChatRoom}
       openOneRoom={openOneRoom}
       setMakeRoom={setMakeRoom}
       oneRoomId={oneRoomId}
@@ -65,6 +97,9 @@ export default function MainPage() {
       chatRoomId={chatRoomId}
       setOneRoomId={setOneRoomId}
       setChatRoomId={setChatRoomId}
+      fromChatRoom={fromChatRoom}
+      groupMember={groupMember}
+      userName={userName}
     />
   );
 }

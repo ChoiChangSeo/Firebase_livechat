@@ -1,14 +1,6 @@
-import { firebaseAuth } from "../../../../pages/_app";
 import { v4 as uuidv4 } from "uuid";
 import * as S from "./ChatRoomStyles";
-import {
-  ChangeEvent,
-  Dispatch,
-  FormEvent,
-  LegacyRef,
-  MouseEvent,
-  SetStateAction,
-} from "react";
+import { ChangeEvent, FormEvent, LegacyRef, MouseEvent } from "react";
 
 interface IPropsChatRoomUI {
   sendMsg: (e: FormEvent<HTMLFormElement>) => void;
