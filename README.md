@@ -1,7 +1,7 @@
 # Firebase_livechat
 Firebase,nextron.js를 활용하여 일대다 라이브채팅 구현하기
 
-#firebaseConfig의 경우 env 처리하여 올렸습니다.
+# firebaseConfig의 경우 env 처리하여 올렸습니다.
 
 ### 로그인
 - 정규식을 이용해 이메일 비밀번호를 검증하고 파이어베이스 auth를 통해 구현하였습니다.
